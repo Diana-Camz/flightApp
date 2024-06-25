@@ -15,7 +15,8 @@ export default ButtonNext
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 0,
     },
     button_container: {
         backgroundColor: '#969595',
