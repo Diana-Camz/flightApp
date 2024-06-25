@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React from 'react'
-import FlightCard from '../components/booking/FlightCard';
+import FlightCard from '../components/FlightCard';
 import { Ionicons } from '@expo/vector-icons';
 
 const DATA = [
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   title: {
-    fontFamily: '',
     fontSize: 40,
     fontWeight: '700',
     color: '#9700FF',
