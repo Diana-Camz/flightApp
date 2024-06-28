@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Dates = () => {
+const Dates = ({navigation}) => {
   const [startDate, setstartDate] = useState('');
   const [endDate, setEndDate] = useState('')
   const [markedDates, setMarkedDates] = useState({});
@@ -58,7 +58,7 @@ const Dates = () => {
 
   return (
     <View style={styles.container}>
-      <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
+      <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
       <FlightInfo 
         origin={['MEX', 'CDMX']} 
         destiny={['CAN', 'OTAWA']}
@@ -80,7 +80,7 @@ const Dates = () => {
 />
       </View>
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'}/>
+        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Passengers')}}/>
       </View>
     </View>
   )

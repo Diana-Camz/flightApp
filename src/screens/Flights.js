@@ -86,7 +86,7 @@ const DATA = [
       }
 ]
 
-const Flights = () => {
+const Flights = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
@@ -102,7 +102,7 @@ const Flights = () => {
         passengers={item.passengers}
         />}
       />
-      <Ionicons name={'add-circle'} size={90} style={styles.iconAdd}/>
+      <Ionicons name={'add-circle'} size={90} style={styles.iconAdd} onPress={()=>{navigation.navigate('Origin')}}/>
     </View>
   )
 }

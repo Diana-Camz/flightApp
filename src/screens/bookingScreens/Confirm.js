@@ -4,10 +4,19 @@ import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Confirm = () => {
+const Confirm = ({navigation}) => {
+
+  const confirmRequest = () => {
+    navigation.navigate('Home')
+    console.log('boton Confirm presionado')
+  }
+
+  const cancelRequest = () => {
+    console.log('boton Cancel presionado')
+  }
+
   return (
     <View style={styles.container}>
-      <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
       <FlightInfo 
         origin={['MEX', 'CDMX']} 
         destiny={['CAN', 'OTAWA']}
@@ -19,8 +28,8 @@ const Confirm = () => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Confirm'}/>
-        <ButtonNext title={'Cancel'}/>
+        <ButtonNext title={'Confirm'}  onPress={confirmRequest} />
+        <ButtonNext title={'Cancel'}  onPress={cancelRequest} />
       </View>
     </View>
   )
@@ -33,16 +42,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     paddingVertical: 15,
+    marginTop: 100,
   },
   title: {
     fontSize: 27,
     fontWeight: '700',
     color: '#48345c',
     width: 200,
-  },
-  icon: {
-    marginTop: 20,
-    color: '#9700FF'
   },
   title_container: {
     paddingHorizontal: 20,

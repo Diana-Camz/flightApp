@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Passengers = () => {
+const Passengers = ({navigation}) => {
   const [passengers, setPassengers] = useState(1);
 
   const addPassengers = () => {
@@ -20,7 +20,7 @@ const Passengers = () => {
   }
   return (
     <View style={styles.container}>
-      <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
+      <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
       <FlightInfo 
         origin={['MEX', 'CDMX']} 
         destiny={['CAN', 'OTAWA']}
@@ -38,7 +38,7 @@ const Passengers = () => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'}/>
+        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Confirm')}}/>
       </View>
     </View>
   )
