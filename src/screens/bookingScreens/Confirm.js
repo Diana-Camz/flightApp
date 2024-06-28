@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Confirm = ({navigation}) => {
-
+  const [isActive, setIsActive] = useState(true);
   const confirmRequest = () => {
     navigation.navigate('Home')
     console.log('boton Confirm presionado')
@@ -28,8 +28,8 @@ const Confirm = ({navigation}) => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Confirm'}  onPress={confirmRequest} />
-        <ButtonNext title={'Cancel'}  onPress={cancelRequest} />
+        <ButtonNext title={'Confirm'}  onPress={confirmRequest} isActive={isActive}/>
+        <ButtonNext title={'Cancel'}  onPress={cancelRequest} isActive={isActive}/>
       </View>
     </View>
   )

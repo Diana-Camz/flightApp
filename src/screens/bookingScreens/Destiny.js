@@ -1,10 +1,23 @@
 import {StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Destiny = ({navigation}) => {
+  const [destiny, setDestiny] = useState('')
+  const [isActive, setIsActive] = useState(false)
+
+  useEffect(() =>{
+    if(destiny.length >= 1){
+      setIsActive(true)
+    }else{
+      setIsActive(false)
+    }}, [destiny])
+
+  const handleSendData = () => {
+    navigation.navigate('Dates')
+  }
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
@@ -16,10 +29,10 @@ const Destiny = ({navigation}) => {
       />
       <View style={styles.input_container}>
         <Text style={styles.title}>Where will you be flying to?</Text>
-        <TextInput style={styles.input} placeholder='Select Location'></TextInput>
+        <TextInput style={styles.input} placeholder='Select Location' onChangeText={val => setDestiny(val)}></TextInput>
       </View>
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Dates')}}/>
+        <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>
       </View>
     </View>
   )

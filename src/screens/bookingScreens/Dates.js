@@ -6,6 +6,7 @@ import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Dates = ({navigation}) => {
+  const [isActive, setIsActive] = useState(false);
   const [startDate, setstartDate] = useState('');
   const [endDate, setEndDate] = useState('')
   const [markedDates, setMarkedDates] = useState({});
@@ -37,7 +38,7 @@ const Dates = ({navigation}) => {
         textColor: '#ffffff',
       };
     }
-
+    setIsActive(true);
     setMarkedDates({
       ...range,
       [startDate]: {
@@ -80,7 +81,7 @@ const Dates = ({navigation}) => {
 />
       </View>
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Passengers')}}/>
+        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Passengers')}} isActive={isActive}/>
       </View>
     </View>
   )

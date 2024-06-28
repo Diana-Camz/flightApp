@@ -6,13 +6,14 @@ import FlightInfo from '../../components/booking/FlightInfo';
 
 const Passengers = ({navigation}) => {
   const [passengers, setPassengers] = useState(1);
+  const [isActive, setIsActive] = useState(true);
 
   const addPassengers = () => {
     setPassengers(passengers + 1)
   }
 
   const removePassengers = () => {
-    if(passengers <= 0){
+    if(passengers <= 1){
       return
     } else {
       setPassengers(passengers - 1)
@@ -38,7 +39,7 @@ const Passengers = ({navigation}) => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Confirm')}}/>
+        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Confirm')}} isActive={isActive}/>
       </View>
     </View>
   )
