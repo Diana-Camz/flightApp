@@ -1,12 +1,24 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
+import { SelectList } from 'react-native-dropdown-select-list'
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Origin = ({navigation}) => {
   const [origin, setOrigin] = useState('')
+  const [selected, setSelected] = useState("");
   const [isActive, setIsActive] = useState(false)
+
+  const data = [
+    {key:'1', value:'Mobiles', disabled:true},
+    {key:'2', value:'Appliances'},
+    {key:'3', value:'Cameras'},
+    {key:'4', value:'Computers', disabled:true},
+    {key:'5', value:'Vegetables'},
+    {key:'6', value:'Diary Products'},
+    {key:'7', value:'Drinks'},
+]
 
   useEffect(() =>{
     if(origin.length >= 1){
@@ -16,7 +28,8 @@ const Origin = ({navigation}) => {
     }}, [origin])
 
   const handleSendData = () => {
-    navigation.navigate('Destiny')
+    //navigation.navigate('Destiny')
+    console.log(selected)
   }
   return (
     <View style={styles.container}>
@@ -29,7 +42,13 @@ const Origin = ({navigation}) => {
       />
       <View style={styles.input_container}>
         <Text style={styles.title}>Where are you now?</Text>
-        <TextInput style={styles.input} placeholder='Select Location' onChangeText={val => setOrigin(val)}></TextInput>
+        {/* <TextInput style={styles.input} placeholder='Select Location' onChangeText={val => setOrigin(val)}> */}
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={data} 
+        save="value"
+    />
+        {/* </TextInput> */}
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>
