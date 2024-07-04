@@ -18,7 +18,7 @@ const FlightInfo = ({origin, destiny, dateDeparture, passengers}) => {
         </View>
         <View style={styles.detailsInfo_container}>
             <Text style={[styles.detailsInfo_text, {textAlign: 'right'}]}>{dateDeparture}</Text>
-            <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers} passengers</Text>
+            {passengers == 0 ? <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}></Text> : <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers == 1 ? `${passengers} passenger` : `${passengers} passengers`}</Text>}
         </View>
     </View>
   )

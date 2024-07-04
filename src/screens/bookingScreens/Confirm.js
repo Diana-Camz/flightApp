@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Confirm = ({navigation}) => {
+const Confirm = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(true);
+  const {origin, destiny, day, passengers} = route.params;
   const confirmRequest = () => {
-    navigation.navigate('Home')
+    //navigation.navigate('Home')
     console.log('boton Confirm presionado')
+    console.log(origin, destiny, day, passengers)
   }
 
   const cancelRequest = () => {
@@ -18,10 +19,10 @@ const Confirm = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlightInfo 
-        origin={['MEX', 'CDMX']} 
-        destiny={['CAN', 'OTAWA']}
-        dateDeparture={'September 15, 2020'}
-        passengers={3}
+        origin={origin} 
+        destiny={destiny}
+        dateDeparture={day}
+        passengers={passengers}
       />
       <View style={styles.title_container}>
         <Text style={styles.title}>Your request was received</Text>

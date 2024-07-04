@@ -18,7 +18,7 @@ const FlightCard = ({origin, destiny, dateDeparture, passengers}) => {
         </View>
         <View style={styles.detailsInfo_container}>
             <Text style={[styles.detailsInfo_text, {textAlign: 'right'}]}>{dateDeparture}</Text>
-            <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers} passengers</Text>
+            <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers}</Text>
         </View>
     </View>
   )

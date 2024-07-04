@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Passengers = ({navigation}) => {
+const Passengers = ({route, navigation}) => {
   const [passengers, setPassengers] = useState(1);
   const [isActive, setIsActive] = useState(true);
+  const {origin, destiny, day} = route.params;
 
   const addPassengers = () => {
     setPassengers(passengers + 1)
@@ -19,14 +20,18 @@ const Passengers = ({navigation}) => {
       setPassengers(passengers - 1)
     }
   }
+
+  const handleSendData = () => {
+    navigation.navigate('Confirm', {origin: origin, destiny: destiny, day: day, passengers: passengers})
+  }
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
       <FlightInfo 
-        origin={['MEX', 'CDMX']} 
-        destiny={['CAN', 'OTAWA']}
-        dateDeparture={'September 15, 2020'}
-        passengers={3}
+        origin={origin} 
+        destiny={destiny}
+        dateDeparture={day}
+        passengers={passengers}
       />
       <View style={styles.title_container}>
         <Text style={styles.title}>How many passengers?</Text>
@@ -39,7 +44,7 @@ const Passengers = ({navigation}) => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Confirm')}} isActive={isActive}/>
+        <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>
       </View>
     </View>
   )

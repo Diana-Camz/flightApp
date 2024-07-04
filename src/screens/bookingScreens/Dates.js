@@ -23,7 +23,7 @@ const Dates = ({route, navigation}) => {
   const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
 
   const handleSendData = () => {
-    navigation.navigate('Passengers', {origin: origin, destiny: destiny, day: selectedDate})
+    navigation.navigate('Passengers', {origin: origin, destiny: destiny, day: formattedDate})
   }
 
   return (
