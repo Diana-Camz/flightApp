@@ -4,67 +4,26 @@ import {Calendar} from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
+import {format, parseISO} from 'date-fns'
 
 const Dates = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false);
-  const [startDate, setstartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [markedDates, setMarkedDates] = useState({});
+  const [selectedDate, setSelectedDay] = useState('');
   const currentDay = new Date().toISOString().split('T')[0];
   const {origin, destiny} = route.params;
-  const getMonth = new Date(startDate).getMonth();
-  const getDay = new Date(startDate).getDate() + 1;
-  const getYear = new Date(startDate).getFullYear();
 
   const onDayPress = (day) => {
- if(!startDate || (startDate && endDate)){
-  setstartDate(day.dateString)
-  setEndDate('')
-  setMarkedDates({
-    [day.dateString]: {
-      selected: true,
-      startingDay: true,
-      color: '#9700FF',
-      textColor: '#ffffff',
-    }
-  })
-} else if(startDate && !endDate){
-    setEndDate(day.dateString);
-    const start = new Date(startDate);
-    const end = new Date(day.dateString);
-    const range = {};
+    setSelectedDay(day.dateString)
+    setIsActive(true)
+  } 
 
-    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-      const dateString = d.toISOString().split('T')[0];
-      range[dateString] = {
-        selected: true,
-        color: '#9700FF',
-        textColor: '#ffffff',
-      };
-    }
-    setIsActive(true);
-    setMarkedDates({
-      ...range,
-      [startDate]: {
-        selected: true,
-        startingDay: true,
-        color: '#9700FF',
-        textColor: '#ffffff',
-      },
-      [day.dateString]: {
-        selected: true,
-        endingDay: true,
-        color: '#9700FF',
-        textColor: '#ffffff',
-      },
-    });
-};
-}
+  const formatDate = (date) => {
+    return format(date, 'MMMM d, yyyy')
+  }
+  const formattedDate = selectedDate ? formatDate(parseISO(selectedDate)) : '';
 
   const handleSendData = () => {
-    console.log(getDay)
-    console.log(getMonth)
-    console.log(getYear)
+    navigation.navigate('Passengers', {origin: origin, destiny: destiny, day: selectedDate})
   }
 
   return (
@@ -73,19 +32,22 @@ const Dates = ({route, navigation}) => {
       <FlightInfo 
         origin={origin} 
         destiny={destiny}
-        dateDeparture={getDay === 'Invalid Date' ? '' : `${getMonth} ${getDay}, ${getYear}`}
-        passengers={3}
+        dateDeparture={formattedDate}
+        passengers={0}
       />
       <View style={styles.input_container}>
         <Text style={styles.title}>Select Date</Text>
         <Calendar
           onDayPress={onDayPress}
-          markingType={'period'}
+          markedDates={{[selectedDate]: {
+            selected: true,
+            selectedColor: '#9700FF',
+          }}}
           minDate={currentDay}
           disableAllTouchEventsForDisabledDays={true}
-          markedDates={markedDates}
           theme={{
-            todayTextColor: '#48345c',
+            todayTextColor: 'white',
+            todayBackgroundColor: '#391e69',
             arrowColor: '#9700FF',
           }}
 />
