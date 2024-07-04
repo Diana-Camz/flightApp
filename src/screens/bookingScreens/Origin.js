@@ -8,7 +8,6 @@ import FlightInfo from '../../components/booking/FlightInfo';
 
 const Origin = ({navigation}) => {
   const [origin, setOrigin] = useState('')
-  const [selected, setSelected] = useState("");
   const [isActive, setIsActive] = useState(false)
 
   useEffect(() =>{
@@ -19,11 +18,7 @@ const Origin = ({navigation}) => {
     }}, [origin])
 
   const handleSendData = () => {
-    const airport = origin.slice(-3)
-    const capital = origin.slice(0,-6)
-    console.log(capital)
     navigation.navigate('Destiny', {origin: origin})
-    return [airport, capital]
   }
   return (
     <View style={styles.container}>

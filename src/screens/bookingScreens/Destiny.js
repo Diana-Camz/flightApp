@@ -19,10 +19,7 @@ const Destiny = ({route, navigation}) => {
     }}, [destiny])
 
   const handleSendData = () => {
-    const airport = destiny.slice(-3)
-    const capital = destiny.slice(0,-6)
     navigation.navigate('Dates', {origin: origin, destiny: destiny})
-    console.log(typeof destiny)
   }
   return (
     <View style={styles.container}>
