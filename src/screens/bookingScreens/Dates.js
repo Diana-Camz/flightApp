@@ -5,12 +5,16 @@ import { Ionicons } from '@expo/vector-icons';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Dates = ({navigation}) => {
+const Dates = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false);
   const [startDate, setstartDate] = useState('');
-  const [endDate, setEndDate] = useState('')
+  const [endDate, setEndDate] = useState('');
   const [markedDates, setMarkedDates] = useState({});
   const currentDay = new Date().toISOString().split('T')[0];
+  const {origin, destiny} = route.params;
+  const getMonth = new Date(startDate).getMonth();
+  const getDay = new Date(startDate).getDate() + 1;
+  const getYear = new Date(startDate).getFullYear();
 
   const onDayPress = (day) => {
  if(!startDate || (startDate && endDate)){
@@ -57,13 +61,19 @@ const Dates = ({navigation}) => {
 };
 }
 
+  const handleSendData = () => {
+    console.log(getDay)
+    console.log(getMonth)
+    console.log(getYear)
+  }
+
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
       <FlightInfo 
-        origin={['MEX', 'CDMX']} 
-        destiny={['CAN', 'OTAWA']}
-        dateDeparture={'September 15, 2020'}
+        origin={origin} 
+        destiny={destiny}
+        dateDeparture={getDay === 'Invalid Date' ? '' : `${getMonth} ${getDay}, ${getYear}`}
         passengers={3}
       />
       <View style={styles.input_container}>
@@ -81,7 +91,7 @@ const Dates = ({navigation}) => {
 />
       </View>
       <View style={styles.button_container}>
-        <ButtonNext title={'Next'} onPress={() => {navigation.navigate('Passengers')}} isActive={isActive}/>
+        <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>
       </View>
     </View>
   )

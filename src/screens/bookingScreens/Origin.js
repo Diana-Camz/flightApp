@@ -19,30 +19,29 @@ const Origin = ({navigation}) => {
     }}, [origin])
 
   const handleSendData = () => {
-    //navigation.navigate('Destiny')
     const airport = origin.slice(-3)
     const capital = origin.slice(0,-6)
     console.log(capital)
+    navigation.navigate('Destiny', {origin: origin})
+    return [airport, capital]
   }
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
-      <FlightInfo 
-        origin={['MEX', 'CDMX']} 
-        destiny={['CAN', 'OTAWA']}
-        dateDeparture={'September 15, 2020'}
-        passengers={3}
-      />
+      {isActive ? <FlightInfo 
+        origin={origin} 
+        destiny={''}
+        dateDeparture={''}
+        passengers={0}
+      /> : ''}
       <View style={styles.input_container}>
         <Text style={styles.title}>Where are you flying from?</Text>
-        {/* <TextInput style={styles.input} placeholder='Select Location' onChangeText={val => setOrigin(val)}> */}
         <SelectList 
-        setSelected={(val) => setOrigin(val)} 
-        data={data} 
-        save="value"
-        placeholder='Select your airport'
-    />
-        {/* </TextInput> */}
+          setSelected={(val) => setOrigin(val)} 
+          data={data} 
+          save="value"
+          placeholder='Select your airport'
+        />
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>

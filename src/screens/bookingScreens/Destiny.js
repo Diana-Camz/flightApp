@@ -1,12 +1,15 @@
 import {StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
+import { SelectList } from 'react-native-dropdown-select-list';
+import data from '../../data/data.json'
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
-const Destiny = ({navigation}) => {
+const Destiny = ({route, navigation}) => {
   const [destiny, setDestiny] = useState('')
   const [isActive, setIsActive] = useState(false)
+  const {origin} = route.params;
 
   useEffect(() =>{
     if(destiny.length >= 1){
@@ -16,20 +19,28 @@ const Destiny = ({navigation}) => {
     }}, [destiny])
 
   const handleSendData = () => {
-    navigation.navigate('Dates')
+    const airport = destiny.slice(-3)
+    const capital = destiny.slice(0,-6)
+    navigation.navigate('Dates', {origin: origin, destiny: destiny})
+    console.log(typeof destiny)
   }
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon} onPress={() => navigation.goBack()}/>
       <FlightInfo 
-        origin={['MEX', 'CDMX']} 
-        destiny={['CAN', 'OTAWA']}
-        dateDeparture={'September 15, 2020'}
-        passengers={3}
+        origin={origin} 
+        destiny={destiny}
+        dateDeparture={''}
+        passengers={0}
       />
       <View style={styles.input_container}>
         <Text style={styles.title}>Where will you be flying to?</Text>
-        <TextInput style={styles.input} placeholder='Select Location' onChangeText={val => setDestiny(val)}></TextInput>
+        <SelectList 
+          setSelected={(val) => setDestiny(val)} 
+          data={data} 
+          save="value"
+          placeholder='Select your airport'
+        />
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Next'} onPress={handleSendData} isActive={isActive}/>
@@ -51,6 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#48345c',
     width: 250,
+    marginBottom: 30,
   },
   icon: {
     marginTop: 20,
