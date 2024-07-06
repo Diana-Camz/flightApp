@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import { database } from '../config/firebase';
+import {querySnapshot, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
 import FlightCard from '../components/FlightCard';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -87,18 +89,37 @@ const DATA = [
 ]
 
 const Flights = ({navigation}) => {
+  const [flights, setFlights] = useState([])
+
+  useEffect(() => {
+    const collectionRef = collection(database, 'flights')
+    const q = query(collectionRef, orderBy('createdAt', 'asc'))
+
+    const unsuscribe = onSnapshot(q, querySnapshot => {
+      setFlights(
+        querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          origin: doc.data().origin,
+          destiny: doc.data().destiny,
+          date: doc.data().date,
+          passengers: doc.data().passengers
+        })
+      )
+    )})
+    return unsuscribe
+  }, [])
   return (
     <View style={styles.container}>
       <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
       <Text style={styles.title}>My Flights</Text>
       <FlatList
-      data={DATA}
+      data={flights}
       keyExtractor={item => item.id}
       renderItem={({item}) => 
         <FlightCard 
         origin={item.origin} 
         destiny={item.destiny} 
-        dateDeparture={item.dateDeparture} 
+        dateDeparture={item.date} 
         passengers={item.passengers}
         />}
       />
@@ -127,6 +148,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: '#9700FF',
     alignSelf: 'center',
-    paddingTop: 670,
+    marginTop: 670,
   }
 })

@@ -1,15 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
+import {database} from '../../config/firebase'
+import { collection, addDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/booking/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Confirm = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(true);
   const {origin, destiny, day, passengers} = route.params;
-  const confirmRequest = () => {
-    //navigation.navigate('Home')
-    console.log('boton Confirm presionado')
-    console.log(origin, destiny, day, passengers)
+  const [newFlight, setNewFlight] = useState({
+    origin: origin,
+    destiny: destiny,
+    date: day,
+    passengers: passengers,
+    createdAt: new Date(),
+  })
+
+  const onSendData = async () => {
+    await addDoc(collection(database, 'flights'), newFlight)
+    navigation.navigate('Home')
   }
 
   const cancelRequest = () => {
@@ -29,7 +38,7 @@ const Confirm = ({route, navigation}) => {
       </View>
 
       <View style={styles.button_container}>
-        <ButtonNext title={'Confirm'}  onPress={confirmRequest} isActive={isActive}/>
+        <ButtonNext title={'Confirm'}  onPress={onSendData} isActive={isActive}/>
         <ButtonNext title={'Cancel'}  onPress={cancelRequest} isActive={isActive}/>
       </View>
     </View>

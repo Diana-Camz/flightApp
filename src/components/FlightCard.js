@@ -7,18 +7,18 @@ const FlightCard = ({origin, destiny, dateDeparture, passengers}) => {
     <View style={styles.container}>
         <View style={styles.mainInfo_container}>
             <View style={styles.origin_container}>
-              <Text style={[styles.city_title, {textAlign: 'left'}]}>{origin[0]}</Text>
-              <Text style={[styles.city_subtitle, {textAlign: 'left'}]}>{origin[1]}</Text>
+              <Text style={[styles.city_title, {textAlign: 'left'}]}>{origin.slice(-3)}</Text>
+              <Text style={[styles.city_subtitle, {textAlign: 'left'}]}>{origin.slice(0,-6)}</Text>
             </View>
-            <Ionicons name='airplane' size={25} color={'#9700FF'} style={styles.icon}/>
+            <Ionicons name='airplane' size={30} color={'#9700FF'} style={styles.icon}/>
             <View style={styles.destiny_container}>
-              <Text style={[styles.city_title, {textAlign: 'right'}]}>{destiny[0]}</Text>
-              <Text style={[styles.city_subtitle, {textAlign: 'right'}]}>{destiny[1]}</Text>
+              <Text style={[styles.city_title, {textAlign: 'right'}]}>{destiny.slice(-3)}</Text>
+              <Text style={[styles.city_subtitle, {textAlign: 'right'}]}>{destiny.slice(0,-6)}</Text>
             </View>
         </View>
         <View style={styles.detailsInfo_container}>
             <Text style={[styles.detailsInfo_text, {textAlign: 'right'}]}>{dateDeparture}</Text>
-            <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers}</Text>
+            <Text style={[styles.detailsInfo_text, {textAlign: 'left'}]}>{passengers == 1 ? `${passengers} passenger` : `${passengers} passengers`}</Text>
         </View>
     </View>
   )
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     paddingLeft: 160,
+    paddingTop: 10,
   },
   detailsInfo_text: {
     fontWeight: '700',
