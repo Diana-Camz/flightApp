@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { database } from '../config/firebase';
 import {querySnapshot, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
@@ -116,12 +116,14 @@ const Flights = ({navigation}) => {
       data={flights}
       keyExtractor={item => item.id}
       renderItem={({item}) => 
-        <FlightCard 
-        origin={item.origin} 
-        destiny={item.destiny} 
-        dateDeparture={item.date} 
-        passengers={item.passengers}
-        />}
+        <Pressable onPress={navigation.navigate('Update')}>
+          <FlightCard 
+          origin={item.origin} 
+          destiny={item.destiny} 
+          dateDeparture={item.date} 
+          passengers={item.passengers}
+        />
+        </Pressable>}
       />
       <Ionicons name={'add-circle'} size={90} style={styles.iconAdd} onPress={()=>{navigation.navigate('Origin')}}/>
     </View>

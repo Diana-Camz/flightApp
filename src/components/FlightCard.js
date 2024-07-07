@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import {StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -28,8 +28,10 @@ export default FlightCard
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#5a5a5a',
+    borderWidth: 1,
+    borderColor: '#b9b9b9',
+    borderRadius: 15,
+    marginBottom: 5,
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
