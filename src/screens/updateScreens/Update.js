@@ -1,13 +1,40 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {database} from '../../config/firebase'
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/booking/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem';
 
 
-const Update = ({navigation}) => {
+const Update = ({route, navigation}) => {
     const [isActive, setIsActive] = useState(true);
+    const [flight, setFlight] = useState(null);
+    const {id} = route.params;
+
+    const getFlightById = async (id)=>  {
+      try {
+        const docRef = doc(database, 'flights', id)
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()){
+          setFlight(docSnap.data())
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    useEffect(()=> {
+      getFlightById(id)
+      console.log(id)
+    }, [id]);
+
+    if (!flight) {
+      return (
+        <View style={styles.container}>
+          <Text>Loading...</Text>
+        </View>
+      );
+    }
 
     const func = () => {
       navigation.navigate('OriginUpdate')
@@ -18,6 +45,10 @@ const Update = ({navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
+      <UpdateItem title={'Origin'} itemInfo={flight.origin} func={func}/>
+      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} func={func}/>
+      <UpdateItem title={'Date'} itemInfo={flight.date} func={func}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} func={func}/>
         {/* <View style={styles.info}>
             <View style={styles.info_text_container}>
                 <Text style={styles.info_city}>Mexico City - MEX</Text>
@@ -26,9 +57,8 @@ const Update = ({navigation}) => {
             <View style={styles.button_edit_container}>
                 <Text style={styles.button_text}>Edit</Text>
             </View>
-        </View> */}
-        <UpdateItem title={'Origin'} itemInfo={'Mexico City - MEX'} func={func}/>
-        <View style={styles.info}>
+        </View>
+         <View style={styles.info}>
             <View style={styles.info_text_container}>
                 <Text style={styles.info_city}>United States - USA</Text>
                 <Text style={styles.info_title}>Destiny</Text>
@@ -54,11 +84,11 @@ const Update = ({navigation}) => {
             <View style={styles.button_edit_container}>
                 <Text style={styles.button_text}>Edit</Text>
             </View>
-        </View>
+        </View> */}
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={() => {console.log('delete button')}} isActive={isActive}/>
-        <ButtonNext title={'Cancel'}  onPress={() => navigation.goBack()} isActive={isActive}/>
+        <ButtonNext title={'Cancel'}  onPress={() => navigation.navigate('Home')} isActive={isActive}/>
       </View>
     </View>
   )
