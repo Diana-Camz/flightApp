@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {database} from '../../config/firebase'
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/booking/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem';
 
@@ -25,8 +25,40 @@ const Update = ({route, navigation}) => {
 
     useEffect(()=> {
       getFlightById(id)
-      console.log(id)
     }, [id]);
+
+    const func = () => {
+      navigation.navigate('OriginUpdate')
+    }
+
+    const confirmDelete = async (id) => {
+      Alert.alert(
+        'Confirm Deletion',
+        'Are you sure you want to delete this Flight?', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('cancelar'),
+            style: 'cancel',
+          },
+          {
+            text: 'Delete',
+            onPress: () => deleteFlight(id),
+          },
+        ],
+        {cancelable: false}
+      )
+    }
+    const deleteFlight = async () => {
+      try {
+        await deleteDoc(doc(database, 'flights', id));
+        Alert.alert('Flight deleted', 'The flight has been deleted succesfully.', [
+          { text: 'Ok', onPress: () => navigation.navigate('Home')}
+        ])
+      } catch (error) {
+        console.log(error);
+        Alert.alert('Error', 'An error occurred while deleting the flight.')
+      }
+    }
 
     if (!flight) {
       return (
@@ -36,9 +68,6 @@ const Update = ({route, navigation}) => {
       );
     }
 
-    const func = () => {
-      navigation.navigate('OriginUpdate')
-    }
   return (
     <View style={styles.container}>
       <View style={styles.title_container}>
@@ -87,7 +116,7 @@ const Update = ({route, navigation}) => {
         </View> */}
     </View>
       <View style={styles.button_container}>
-        <ButtonNext title={'Delete Flight'}  onPress={() => {console.log('delete button')}} isActive={isActive}/>
+        <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
         <ButtonNext title={'Cancel'}  onPress={() => navigation.navigate('Home')} isActive={isActive}/>
       </View>
     </View>
