@@ -27,8 +27,9 @@ const Update = ({route, navigation}) => {
       getFlightById(id)
     }, [id]);
 
-    const func = () => {
-      navigation.navigate('OriginUpdate')
+    const goToEditScreen = () => {
+      navigation.navigate('OriginUpdate', {id: id})
+      //console.log(id)
     }
 
     const confirmDelete = async (id) => {
@@ -37,7 +38,7 @@ const Update = ({route, navigation}) => {
         'Are you sure you want to delete this Flight?', [
           {
             text: 'Cancel',
-            onPress: () => console.log('cancelar'),
+            onPress: () => {},
             style: 'cancel',
           },
           {
@@ -74,10 +75,10 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
-      <UpdateItem title={'Origin'} itemInfo={flight.origin} func={func}/>
-      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} func={func}/>
-      <UpdateItem title={'Date'} itemInfo={flight.date} func={func}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} func={func}/>
+      <UpdateItem title={'Origin'} itemInfo={flight.origin} func={goToEditScreen}/>
+      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} func={() => {}}/>
+      <UpdateItem title={'Date'} itemInfo={flight.date} func={() => {}}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} func={() => {}}/>
         {/* <View style={styles.info}>
             <View style={styles.info_text_container}>
                 <Text style={styles.info_city}>Mexico City - MEX</Text>
