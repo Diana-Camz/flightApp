@@ -27,11 +27,6 @@ const Update = ({route, navigation}) => {
       getFlightById(id)
     }, [id]);
 
-    const goToEditScreen = () => {
-      navigation.navigate('OriginUpdate', {id: id})
-      //console.log(id)
-    }
-
     const confirmDelete = async (id) => {
       Alert.alert(
         'Confirm Deletion',
@@ -52,7 +47,7 @@ const Update = ({route, navigation}) => {
     const deleteFlight = async () => {
       try {
         await deleteDoc(doc(database, 'flights', id));
-        Alert.alert('Flight deleted', 'The flight has been deleted succesfully.', [
+        Alert.alert('Flight deleted', 'The flight has been deleted successfully.', [
           { text: 'Ok', onPress: () => navigation.navigate('Home')}
         ])
       } catch (error) {
@@ -75,46 +70,10 @@ const Update = ({route, navigation}) => {
         <Text style={styles.title}>Edit your flight or delete it</Text>
       </View>
     <View style={styles.info_container}>
-      <UpdateItem title={'Origin'} itemInfo={flight.origin} func={goToEditScreen}/>
-      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} func={() => {}}/>
-      <UpdateItem title={'Date'} itemInfo={flight.date} func={() => {}}/>
-      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} func={() => {}}/>
-        {/* <View style={styles.info}>
-            <View style={styles.info_text_container}>
-                <Text style={styles.info_city}>Mexico City - MEX</Text>
-                <Text style={styles.info_title}>Origin</Text>
-            </View>
-            <View style={styles.button_edit_container}>
-                <Text style={styles.button_text}>Edit</Text>
-            </View>
-        </View>
-         <View style={styles.info}>
-            <View style={styles.info_text_container}>
-                <Text style={styles.info_city}>United States - USA</Text>
-                <Text style={styles.info_title}>Destiny</Text>
-            </View>
-            <View style={styles.button_edit_container}>
-                <Text style={styles.button_text}>Edit</Text>
-            </View>
-        </View>
-        <View style={styles.info}>
-            <View style={styles.info_text_container}>
-                <Text style={styles.info_city}>August 24, 2024</Text>
-                <Text style={styles.info_title}>Date</Text>
-            </View>
-            <View style={styles.button_edit_container}>
-                <Text style={styles.button_text}>Edit</Text>
-            </View>
-        </View>
-        <View style={styles.info}>
-            <View style={styles.info_text_container}>
-                <Text style={styles.info_city}>2</Text>
-                <Text style={styles.info_title}>Passengers</Text>
-            </View>
-            <View style={styles.button_edit_container}>
-                <Text style={styles.button_text}>Edit</Text>
-            </View>
-        </View> */}
+      <UpdateItem title={'Origin'} itemInfo={flight.origin} onPress={() => navigation.navigate('OriginUpdate', {id: id})}/>
+      <UpdateItem title={'Destiny'} itemInfo={flight.destiny} onPress={() => navigation.navigate('DestinyUpdate', {id: id})}/>
+      <UpdateItem title={'Date'} itemInfo={flight.date} onPress={() => navigation.navigate('DatesUpdate', {id: id})}/>
+      <UpdateItem title={'Passengers'} itemInfo={flight.passengers} onPress={() => navigation.navigate('PassengersUpdate', {id: id})}/>
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
