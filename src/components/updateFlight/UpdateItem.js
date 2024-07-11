@@ -1,14 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const UpdateItem = ({title, itemInfo, func}) => {
+
+const UpdateItem = ({title, itemInfo, onPress}) => {
+
   return (
     <View style={styles.info}>
         <View style={styles.info_text_container}>
             <Text style={styles.info_city}>{itemInfo}</Text>
             <Text style={styles.info_title}>{title}</Text>
         </View>
-        <Pressable style={styles.button_edit_container} onPress={func}>
+        <Pressable style={styles.button_edit_container} onPress={onPress}>
             <Text style={styles.button_text}>Edit</Text>
         </Pressable>
     </View>
@@ -43,12 +45,9 @@ const styles = StyleSheet.create({
   button_edit_container: {
     paddingTop: 3,
     paddingRight: 5,
-    //justifyContent: 'center',
-    //borderWidth: 1,
   },
   button_text: {
     fontWeight: 'bold',
     letterSpacing: 1,
-   // borderWidth: 1,
   },
 })
