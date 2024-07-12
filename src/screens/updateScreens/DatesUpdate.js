@@ -13,6 +13,7 @@ const DatesUpdate = ({route, navigation}) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [flight, setFlight] = useState(null);
   const currentDay = new Date().toISOString().split('T')[0];
+  
   const {id} = route.params;
 
   const getFlightById = async (id) => {
@@ -21,7 +22,6 @@ const DatesUpdate = ({route, navigation}) => {
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()) {
             setFlight(docSnap.data())
-
         }
     } catch (error) {
         console.log(error)
@@ -30,11 +30,7 @@ const DatesUpdate = ({route, navigation}) => {
 
   useEffect(() => {
     getFlightById(id)
-  }, [id])
-
-  const formatInitialDate = (date) => {
-    return format(date, 'yyyy-MM-dd')
-  }
+  }, [id]);
 
   const formatDate = (date) => {
     return format(date, 'MMMM d, yyyy')
@@ -44,8 +40,6 @@ const DatesUpdate = ({route, navigation}) => {
     const newDate = day.dateString;
     setSelectedDate(newDate);
     const formattedDate = newDate ? formatDate(parseISO(newDate)) : '';
-    //const formattedInitialDate = formatInitialDate(parseISO(flight.date))
-    //console.log(formattedInitialDate)
     setFlight(prevFlight => ({...prevFlight, date: formattedDate}));
     setIsActive(true);
     } 
