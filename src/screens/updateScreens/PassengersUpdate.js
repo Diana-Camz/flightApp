@@ -3,11 +3,11 @@ import React, {useState, useEffect} from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import {database} from '../../config/firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
+import ButtonCancel from '../../components/ButtonCancel';
 
 const PassengersUpdate = ({route, navigation}) => {
-  const [passengers, setPassengers] = useState();
   const [flight, setFlight] = useState(null);
   const [isActive, setIsActive] = useState(true);
   const {id} = route.params;
@@ -33,7 +33,7 @@ const PassengersUpdate = ({route, navigation}) => {
   }
 
   const removePassengers = () => {
-    if(passengers <= 1){
+    if(flight.passengers <= 1){
       return
     } else {
       setFlight(prevFlight => ({...prevFlight, passengers: flight.passengers - 1}))
@@ -81,7 +81,7 @@ const PassengersUpdate = ({route, navigation}) => {
 
       <View style={styles.button_container}>
         <ButtonNext title={'Save'} onPress={() => handleEditData(id)} isActive={isActive}/>
-        <ButtonNext title={'Cancel'} onPress={() => navigation.goBack()} isActive={true}/>
+        <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()}/>
       </View>
     </View>
   )

@@ -2,8 +2,9 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {database} from '../../config/firebase'
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem';
+import ButtonCancel from '../../components/ButtonCancel';
 
 
 const Update = ({route, navigation}) => {
@@ -77,7 +78,7 @@ const Update = ({route, navigation}) => {
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
-        <ButtonNext title={'Cancel'}  onPress={() => navigation.navigate('Home')} isActive={isActive}/>
+        <ButtonCancel title={'Cancel'}  onPress={() => navigation.navigate('Home')}/>
       </View>
     </View>
   )

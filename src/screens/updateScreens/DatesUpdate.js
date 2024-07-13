@@ -4,9 +4,10 @@ import {Calendar} from 'react-native-calendars';
 import { Ionicons } from '@expo/vector-icons';
 import {database} from '../../config/firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import {format, parseISO} from 'date-fns'
+import ButtonCancel from '../../components/ButtonCancel';
 
 const DatesUpdate = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false);
@@ -93,7 +94,7 @@ const DatesUpdate = ({route, navigation}) => {
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Save'} onPress={() => handleEditData(id)} isActive={isActive}/>
-        <ButtonNext title={'Cancel'} onPress={() => navigation.goBack()} isActive={true}/>
+        <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()}/>
       </View>
     </View>
   )

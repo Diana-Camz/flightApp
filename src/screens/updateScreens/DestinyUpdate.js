@@ -4,8 +4,9 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import data from '../../data/data.json'
 import {database} from '../../config/firebase'
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
+import ButtonCancel from '../../components/ButtonCancel';
 
 const DestinyUpdate = ({route, navigation}) => {
   const [flight, setFlight] = useState(null);
@@ -66,7 +67,7 @@ const DestinyUpdate = ({route, navigation}) => {
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Save'} onPress={() => handleEditData(id)} isActive={true}/>
-        <ButtonNext title={'Cancel'} onPress={() => navigation.goBack()} isActive={true}/>
+        <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()}/>
       </View>
     </View>
   )
