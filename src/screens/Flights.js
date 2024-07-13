@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable, ActivityIndicator } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { database } from '../config/firebase';
 import {querySnapshot, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Flights = ({navigation}) => {
   const [flights, setFlights] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const collectionRef = collection(database, 'flights')
@@ -23,27 +24,33 @@ const Flights = ({navigation}) => {
           passengers: doc.data().passengers
         })
       )
-    )})
+    )
+    setLoading(false)
+  })
     return unsuscribe
   }, [])
+
   return (
     <View style={styles.container}>
-      <Ionicons name={'arrow-back'} size={30} style={styles.icon}/>
       <Text style={styles.title}>My Flights</Text>
-      <FlatList
-        data={flights}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => 
-          <Pressable onPress={() => navigation.navigate('Update', {id: item.id})}>
-            <FlightCard 
-            id={item.id}
-            origin={item.origin} 
-            destiny={item.destiny} 
-            dateDeparture={item.date} 
-            passengers={item.passengers}
-          />
-          </Pressable>}
-      />
+      {loading 
+        ? <View style={styles.activityIndicator}>
+            <ActivityIndicator size='large' color={'#d5b0ee'}/>
+          </View>
+        : <FlatList
+            data={flights}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => 
+              <Pressable onPress={() => navigation.navigate('Update', {id: item.id})}>
+                <FlightCard 
+                id={item.id}
+                origin={item.origin} 
+                destiny={item.destiny} 
+                dateDeparture={item.date} 
+                passengers={item.passengers}
+              />
+              </Pressable>}
+          />}
       <Ionicons name={'add-circle'} size={90} style={styles.iconAdd} onPress={()=>{navigation.navigate('Origin')}}/>
     </View>
   )
@@ -54,7 +61,7 @@ export default Flights
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingTop: 50,
     marginBottom: 100,
   },
   title: {
@@ -62,8 +69,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#9700FF',
   },
-  icon: {
-    marginTop: 20,
+  activityIndicator: {
+    height: 550,
+    justifyContent: 'center',
   },
   iconAdd: {
     position: 'absolute',
