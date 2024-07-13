@@ -5,6 +5,7 @@ const ButtonNext = ({title, onPress, isActive}) => {
   return (
     <View style={styles.container}>
         <Pressable 
+            disabled={!isActive}
             onPress={onPress} 
             style={[styles.button_container, {backgroundColor: isActive ? '#9700FF' : '#969595',}]}>
             <Text style={[styles.title, {color: isActive ? '#ffffff' : '#c5c5c5',}]}>{title}</Text>

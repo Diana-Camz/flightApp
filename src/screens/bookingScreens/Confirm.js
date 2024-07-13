@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import {database} from '../../config/firebase'
 import { collection, addDoc } from 'firebase/firestore';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
+import ButtonCancel from '../../components/ButtonCancel';
 
 const Confirm = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(true);
@@ -39,7 +40,7 @@ const Confirm = ({route, navigation}) => {
 
       <View style={styles.button_container}>
         <ButtonNext title={'Confirm'}  onPress={onSendData} isActive={isActive}/>
-        <ButtonNext title={'Cancel'}  onPress={cancelRequest} isActive={isActive}/>
+        <ButtonCancel title={'Cancel'}  onPress={cancelRequest}/>
       </View>
     </View>
   )

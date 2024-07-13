@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,  } from 'react-native'
 import React, {useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Passengers = ({route, navigation}) => {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import data from '../../data/data.json'
-import ButtonNext from '../../components/booking/ButtonNext';
+import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 
 const Destiny = ({route, navigation}) => {
