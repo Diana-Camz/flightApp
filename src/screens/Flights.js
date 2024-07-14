@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, FlatList, Pressable, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable,} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { database } from '../config/firebase';
 import {querySnapshot, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
-import FlightCard from '../components/FlightCard';
 import { Ionicons } from '@expo/vector-icons';
+import FlightCard from '../components/FlightCard';
+import Loader from '../components/Loader';
 
 
 const Flights = ({navigation}) => {
@@ -34,9 +35,7 @@ const Flights = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>My Flights</Text>
       {loading 
-        ? <View style={styles.activityIndicator}>
-            <ActivityIndicator size='large' color={'#d5b0ee'}/>
-          </View>
+        ? <Loader height={550}/>
         : <FlatList
             data={flights}
             keyExtractor={item => item.id}
@@ -68,10 +67,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: '700',
     color: '#9700FF',
-  },
-  activityIndicator: {
-    height: 550,
-    justifyContent: 'center',
   },
   iconAdd: {
     position: 'absolute',
