@@ -8,11 +8,13 @@ import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import {format, parseISO} from 'date-fns'
 import ButtonCancel from '../../components/ButtonCancel';
+import Loader from '../../components/Loader';
 
 const DatesUpdate = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [flight, setFlight] = useState(null);
+  const [loading, setLoading] = useState(true)
   const currentDay = new Date().toISOString().split('T')[0];
   
   const {id} = route.params;
@@ -24,6 +26,7 @@ const DatesUpdate = ({route, navigation}) => {
         if(docSnap.exists()) {
             setFlight(docSnap.data())
         }
+        setLoading(false)
     } catch (error) {
         console.log(error)
     }
@@ -58,11 +61,9 @@ const DatesUpdate = ({route, navigation}) => {
     }
   }
 
-  if(!flight) {
+  if(loading) {
     return (
-    <View style={styles.container}>
-        <Text>Loading...</Text>
-    </View>
+    <Loader height={850}/>
     )
   }
 

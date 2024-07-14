@@ -7,9 +7,11 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import ButtonCancel from '../../components/ButtonCancel';
+import Loader from '../../components/Loader';
 
 const DestinyUpdate = ({route, navigation}) => {
   const [flight, setFlight] = useState(null);
+  const [loading, setLoading] = useState(true)
   const {id} = route.params;
 
   const getFlightById = async (id) => {
@@ -19,6 +21,7 @@ const DestinyUpdate = ({route, navigation}) => {
       if(docSnap.exists()) {
         setFlight(docSnap.data())
       }
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -40,11 +43,9 @@ const DestinyUpdate = ({route, navigation}) => {
     }
   }
 
-  if (!flight) {
+  if (loading) {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
+      <Loader height={850}/>
     );
   }
 

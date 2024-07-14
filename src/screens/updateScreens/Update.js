@@ -1,14 +1,16 @@
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {database} from '../../config/firebase'
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem';
 import ButtonCancel from '../../components/ButtonCancel';
+import Loader from '../../components/Loader';
 
 
 const Update = ({route, navigation}) => {
     const [isActive, setIsActive] = useState(true);
+    const [loading, setLoading] = useState(true)
     const [flight, setFlight] = useState(null);
     const {id} = route.params;
 
@@ -19,6 +21,7 @@ const Update = ({route, navigation}) => {
         if(docSnap.exists()){
           setFlight(docSnap.data())
         }
+        setLoading(false)
       } catch (error) {
         console.log(error)
       }
@@ -57,11 +60,9 @@ const Update = ({route, navigation}) => {
       }
     }
 
-    if (!flight) {
+    if (loading) {
       return (
-        <View style={styles.container}>
-          <Text>Loading...</Text>
-        </View>
+        <Loader height={850}/>
       );
     }
 
@@ -136,17 +137,14 @@ const styles = StyleSheet.create({
   button_edit_container: {
     paddingTop: 3,
     paddingRight: 5,
-    //justifyContent: 'center',
-    //borderWidth: 1,
   },
   button_text: {
     fontWeight: 'bold',
     letterSpacing: 1,
-   // borderWidth: 1,
   },
   button_container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-  }
+  },
 })

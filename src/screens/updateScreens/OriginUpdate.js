@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SelectList } from 'react-native-dropdown-select-list';
 import data from '../../data/data.json'
@@ -7,9 +7,11 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import ButtonCancel from '../../components/ButtonCancel';
+import Loader from '../../components/Loader';
 
 const OriginUpdate = ({route, navigation}) => {
   const [flight, setFlight] = useState(null);
+  const [loading, setLoading] = useState(true)
   const {id} = route.params;
 
   const getFlightById = async (id) => {
@@ -19,6 +21,7 @@ const OriginUpdate = ({route, navigation}) => {
       if(docSnap.exists()) {
         setFlight(docSnap.data())
       }
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -40,11 +43,9 @@ const OriginUpdate = ({route, navigation}) => {
     }
   }
 
-  if (!flight) {
+  if (loading) {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
+      <Loader height={850}/>
     );
   }
 
@@ -82,6 +83,10 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 15,
     },
+  activityIndicator: {
+    height: 550,
+    justifyContent: 'center',
+  },
   input_container: {
     paddingHorizontal: 20,
     marginTop: 100,
@@ -92,7 +97,6 @@ const styles = StyleSheet.create({
     color: '#48345c',
     width: 300,
     marginBottom: 30,
-    
   },
   input: {
     borderBottomWidth: 1,
