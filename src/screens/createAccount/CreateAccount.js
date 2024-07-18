@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import ButtonCancel from '../../components/ButtonCancel'
 import ButtonNext from '../../components/ButtonNext';
+import CustomInput from '../../components/login/CustomInput';
 
 const CreateAccount = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -15,17 +16,6 @@ const CreateAccount = ({navigation}) => {
   const [validRePassword, setValidRePassword] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
 
-  const [newUser, setNewUser] = useState({
-    name: '',
-    lastname: '',
-    phoneNumber: '',
-    birthday: '',
-    description: '',
-    profileImage: '',
-    HostMode: false,
-    defaultCity: '',
-  })
-
   const [isFocusedName, setIsFocusedName] = useState(false);
   const [isFocusedLastName, setIsFocusedLastName] = useState(false);
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
@@ -33,85 +23,105 @@ const CreateAccount = ({navigation}) => {
   const [isFocusedRePass, setIsFocusedRePass] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [rePasswordVisible, setRePasswordVisible] = useState(true);
+
+  const [newUser, setNewUser] = useState({
+    name: '',
+    lastname: '',
+  })
+
+  const handleRegister = () => {
+    const emailPattern = /\S+@\S+\.\S+/;
+      if(newUser.name && newUser.lastname && email && password && rePassword){
+        setValidEntries(false)
+        setValidRePassword(false)
+        {emailPattern.test(email) ? setValidEmail(false) : setValidEmail(true)}
+        {password.length >= 6 ? setValidPassword(false) : setValidPassword(true)}
+           if(password === rePassword){
+            //handleCreateUserWithFirebase()
+            console.log(newUser)
+          }else{
+            setValidRePassword(true)
+          }
+        }else {
+          setValidEntries(true)
+        }
+   }
+
+
   return (
     <View style={styles.first_container}>
-    <View style={styles.second_container}>
-      <Text style={styles.title}>Welcome to NestQuest</Text>
-      <Text style={styles.subtitle}>To create an account please complete all fields</Text>
-      <ScrollView style={styles.scrollContainer}>
-            <View style={styles.inputs_container}>
-              <View style={styles.input_container}>
-                <TextInput style={[styles.input_text, isFocusedName && styles.isActive]}
-                onChangeText={val => setNewUser({...newUser, name:val})}
-                value={newUser.name}
-                placeholder={"Name"}
-                placeholderTextColor={'#B4B2B2'}
-                onFocus={() => setIsFocusedName(true)}
-                onBlur={() => setIsFocusedName(false)}/>
-                <Text style={styles.errorTxt}/>
-              </View>
-              <View style={styles.input_container}>
-                <TextInput style={[styles.input_text, isFocusedLastName && styles.isActive]}
-                    onChangeText={(val) => setNewUser({...newUser, lastname:val})}
-                    value={newUser.lastname}
-                    placeholder={"Lastname"}
-                    placeholderTextColor={'#B4B2B2'}
-                    onFocus={() => setIsFocusedLastName(true)}
-                    onBlur={() => setIsFocusedLastName(false)}/>
-                    <Text style={styles.errorTxt}/>
-              </View>
-              <View style={styles.input_container}>
-                <TextInput style={[styles.input_text, isFocusedEmail && styles.isActive]}
-                    onChangeText={val => setEmail(val)}
-                    value={email}
-                    autoCapitalize='none'
-                    placeholder={"Email"}
-                    placeholderTextColor={'#B4B2B2'}
-                    keyboardType='email-address'
-                    onFocus={() => setIsFocusedEmail(true)}
-                    onBlur={() => setIsFocusedEmail(false)}/>
-                    {validEmail ? <Text style={styles.errorTxt}>{emailMessage}</Text> : <Text style={styles.errorTxt}/>}
-              </View>
-              <View style={styles.input_containerPassword}>
-                <TextInput style={[styles.input_text, isFocusedPass && styles.isActive]}
-                    onChangeText={val => setPassword(val)}
-                    value={password}
-                    autoCapitalize='none'
-                    maxLength={30}
-                    placeholder={"Password"}
-                    placeholderTextColor={'#B4B2B2'}
-                    secureTextEntry={passwordVisible}
-                    onFocus={() => setIsFocusedPass(true)}
-                    onBlur={() => setIsFocusedPass(false)}
-                    />
-                    <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={27} color="#A663CC" style={styles.iconPassword} onPress={() => setPasswordVisible(!passwordVisible)}/>
-                    {validPassword ? <Text style={styles.errorTxt}>Password must contain at least 6 characters</Text> : <Text style={styles.errorTxt}/>}
-              </View>
-              <View style={styles.input_containerPassword}>
-                <TextInput style={[styles.input_text, isFocusedRePass && styles.isActive]}
-                    onChangeText={val => setRePassword(val)}
-                    value={rePassword}
-                    autoCapitalize='none'
-                    maxLength={30}
-                    placeholder={"Confirm your password"}
-                    placeholderTextColor={'#B4B2B2'}
-                    secureTextEntry={rePasswordVisible}
-                    onFocus={() => setIsFocusedRePass(true)}
-                    onBlur={() => setIsFocusedRePass(false)}
-                    />
-                    <Ionicons name={rePasswordVisible ? "eye-off" : "eye"} size={27} color="#A663CC" style={styles.iconPassword} onPress={() => setRePasswordVisible(!rePasswordVisible)}/>
-                    {validRePassword ? <Text style={styles.errorTxt}>Passwords do not match</Text> : <Text style={styles.errorTxt}/>}
-              </View>
-              {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter all fields</Text> : <Text style={styles.errorTxt}/>}
-            </View>
-          <ButtonNext title={'Create Account'} 
-                onPress={() => {}}
-      />
-      <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()}/>
-      </ScrollView>
+      <View style={styles.second_container}>
+        <Text style={styles.title}>Welcome to FlightApp</Text>
+        <Text style={styles.subtitle}>To create an account please complete all fields</Text>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.inputs_container}>
+            <CustomInput
+              value={newUser.name}
+              onChangeText={(val) => setNewUser({ ...newUser, name: val })}
+              placeholder="Name"
+              isFocused={isFocusedName}
+              onFocus={() => setIsFocusedName(true)}
+              onBlur={() => setIsFocusedName(false)}
+            />
+            <CustomInput
+              value={newUser.lastname}
+              onChangeText={(val) => setNewUser({ ...newUser, lastname: val })}
+              placeholder="Lastname"
+              isFocused={isFocusedLastName}
+              onFocus={() => setIsFocusedLastName(true)}
+              onBlur={() => setIsFocusedLastName(false)}
+            />
+            <CustomInput
+              value={email}
+              onChangeText={(val) => setEmail(val)}
+              placeholder="Email"
+              isFocused={isFocusedEmail}
+              onFocus={() => setIsFocusedEmail(true)}
+              onBlur={() => setIsFocusedEmail(false)}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              showError={validEmail}
+              errorMessage={emailMessage}
+            />
+            <CustomInput
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Password"
+              isFocused={isFocusedPass}
+              onFocus={() => setIsFocusedPass(true)}
+              onBlur={() => setIsFocusedPass(false)}
+              secureTextEntry={passwordVisible}
+              autoCapitalize="none"
+              maxLength={30}
+              isPassword={true}
+              onIconPress={() => setPasswordVisible(!passwordVisible)}
+              icon={passwordVisible ? "eye-off" : "eye"}
+              showError={validPassword}
+              errorMessage="Password must contain at least 6 characters"
+            />
+            <CustomInput
+              value={rePassword}
+              onChangeText={setRePassword}
+              placeholder="Confirm your password"
+              isFocused={isFocusedRePass}
+              onFocus={() => setIsFocusedRePass(true)}
+              onBlur={() => setIsFocusedRePass(false)}
+              secureTextEntry={rePasswordVisible}
+              autoCapitalize="none"
+              maxLength={30}
+              isPassword={true}
+              onIconPress={() => setRePasswordVisible(!rePasswordVisible)}
+              icon={rePasswordVisible ? "eye-off" : "eye"}
+              showError={validRePassword}
+              errorMessage="Passwords do not match"
+            />
+            {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter all fields</Text> : <Text style={styles.error_text}/>}
+          </View>
+          <ButtonNext title={'Create Account'} onPress={handleRegister} isActive={true}/>
+          <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()} />
+        </ScrollView>
+      </View>  
     </View>
-    
-  </View>
   )
 }
 
@@ -129,13 +139,10 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginBottom: 10,
   },
-  icon: {
-    marginBottom: 5,
-  },
   title: {
     fontSize: 29,
     fontWeight: 'bold',
-    color: '#444444',
+    color: '#48345c',
     marginTop: 8,
     marginHorizontal: 10,
   },
@@ -153,14 +160,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 20,
   },
-  input_container: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  input_containerPassword: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-  },
   input_text: {
     height: 60,
     width: '100%',
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     borderColor: '#DBDADA',
     borderRadius: 8,
   },
-  errorTxt: {
+  error_text: {
     fontSize: 10,
     width: '100%',    
     paddingLeft: 11,
@@ -184,16 +183,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#CD3939',
     marginTop: 8,
-  },
-  isActive: {
-    borderWidth: 2,
-    borderRadius: 8,
-    borderColor: '#444444',
-  },
-  iconPassword: {
-    textAlign: 'justify',
-    position: 'absolute',
-    paddingRight: 12,
-    marginTop: 17,
   },
 });
