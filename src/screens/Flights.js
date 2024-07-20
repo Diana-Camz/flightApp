@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, FlatList, Pressable,} from 'react-native'
 import React, {useEffect, useState} from 'react'
-import { database } from '../config/firebase';
+import { database, firebase_auth as auth} from '../config/firebase';
 import {querySnapshot, collection, onSnapshot, orderBy, query} from 'firebase/firestore'
+import { signOut } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
 import FlightCard from '../components/FlightCard';
 import Loader from '../components/Loader';
@@ -31,9 +32,26 @@ const Flights = ({navigation}) => {
     return unsuscribe
   }, [])
 
+  const signOutWithFirebase = async () => {
+    setLoading(true)
+    try {
+      await signOut(auth)
+      navigation.navigate('Login')
+    } catch (error) {
+      console.log(error, 'sign out failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Flights</Text>
+      <View style={styles.header_container}>
+        <Text style={styles.title}>My Flights</Text>
+        <Pressable onPress={signOutWithFirebase}>
+          <Text style={styles.logout}>log out</Text>
+        </Pressable>
+      </View>
       {loading 
         ? <Loader height={550}/>
         : <FlatList
@@ -62,6 +80,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 50,
     marginBottom: 60,
+  },
+  header_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  logout: {
+    textAlign: 'center',
+    paddingRight: 10,
+    paddingTop: 15,
+    fontSize: 17,
+    fontWeight: 'bold',
+    textAlignVertical: 'center',
+    color: '#3441bd',
   },
   title: {
     fontSize: 40,

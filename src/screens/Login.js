@@ -1,14 +1,17 @@
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import React,{useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
-import firestore from 'firebase/firestore';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
+import firestore, { doc, getDoc } from 'firebase/firestore';
 import ButtonNext from '../components/ButtonNext.js';
 import LoginAccounts from '../components/login/LoginAccounts.js';
+import Loader from '../components/Loader.js';
+import { firebase_auth as auth } from '../config/firebase.js';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const [validEntries, setValidEntries] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
@@ -20,38 +23,50 @@ const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
 
   const handleLogin = () => {
-    const emailPattern = /\S+@\S+\.\S+/;
       if(email && password){
         setValidEntries(false)
-        {emailPattern.test(email) ? setValidEmail(false) : setValidEmail(true)}
-        {password.length >= 6 ? setValidPassword(false) : setValidPassword(true)}
-        SigninWithFirebase()
+        signinWithFirebase()
         }else {
           setValidEntries(true)
         }
   }
 
-  const SigninWithFirebase = async () => {
-    if(email && password){
-      await auth().signInWithEmailAndPassword(email, password).then(async (userCredential) => {
-        const user = userCredential.user
-        if(user){
-          const infoUser = (await firestore().collection('users').doc(user.uid).get()).data()
-          console.log(infoUser);
-        }
-      }).catch(err => {
-        if(err.code === 'auth/email-already-in-use'){
-          setValidEmail(true)
-          setEmailMessage('Email already in use')
-        }
-        if(err.code === 'auth/invalid-email' || err.code === 'auth/invalid-credential'){
-          setValidEmail(true)
-          setEmailMessage('Invalid email')
-        }
-        console.log(err)
-      })
+  const signinWithFirebase = async () => {
+    setLoading(true);
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      //console.log(response)
+      navigation.navigate('Home')
+    } catch (err) {
+      if(err.code === 'auth/email-already-in-use'){
+        setValidEmail(true)
+        setEmailMessage('Email already in use')
+      }
+      if(err.code === 'auth/invalid-email'){
+        setValidEmail(true)
+        setEmailMessage('Please enter a valid email')
+      }
+      console.log(err)
+    } finally {
+      setLoading(false)
     }
-  
+    }
+
+  // const getDataOfUser = async (uid) => {
+  //   try {
+  //     const docRef = doc(database, 'users', uid);
+  //     const docSnap = await getDoc(docRef);
+  //     if(docSnap.exists())
+
+  //   } catch (error) {
+      
+  //   }
+  // }
+
+  if (loading) {
+    return (
+      <Loader height={850}/>
+    );
   }
 
   return (
