@@ -1,12 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
-import {database} from '../../config/firebase'
+import {database, firebase_auth} from '../../config/firebase'
 import { collection, addDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import ButtonCancel from '../../components/ButtonCancel';
+import Loader from '../../components/Loader';
 
 const Confirm = ({route, navigation}) => {
+  const userId = firebase_auth.currentUser?.uid || '';
+
+  const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(true);
   const {origin, destiny, day, passengers} = route.params;
   const [newFlight, setNewFlight] = useState({
@@ -14,16 +18,31 @@ const Confirm = ({route, navigation}) => {
     destiny: destiny,
     date: day,
     passengers: passengers,
+    userId: userId,
     createdAt: new Date(),
   })
 
   const onSendData = async () => {
-    await addDoc(collection(database, 'flights'), newFlight)
-    navigation.navigate('Home')
+    setLoading(true)
+    try {
+      await addDoc(collection(database, 'flights'), newFlight)
+      Alert.alert('Saved flight', 'Your flight has been booked correctly', [
+        {text: 'Ok', onPress: () => navigation.navigate('Home')}
+      ])
+    } catch (error) {
+      console.log(error, 'error sending new flight')
+    }
+    setLoading(false)
   }
 
   const cancelRequest = () => {
-    console.log('boton Cancel presionado')
+    navigation.navigate('Home')
+  }
+
+  if(loading) {
+    return (
+    <Loader height={850}/>
+    )
   }
 
   return (
