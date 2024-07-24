@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, TextInput, Alert, ScrollView } from 'react-native'
 import React, {useState} from 'react'
-import { Ionicons } from '@expo/vector-icons';
 import ButtonCancel from '../../components/ButtonCancel'
 import ButtonNext from '../../components/ButtonNext';
 import CustomInput from '../../components/login/CustomInput';
+import { firebase_auth, database } from '../../config/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, setDoc, doc } from 'firebase/firestore';
+import Loader from '../../components/Loader';
 
 const CreateAccount = ({navigation}) => {
+  const [loading, setLoading] = useState(false)
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
@@ -30,24 +35,61 @@ const CreateAccount = ({navigation}) => {
   })
 
   const handleRegister = () => {
-    const emailPattern = /\S+@\S+\.\S+/;
       if(newUser.name && newUser.lastname && email && password && rePassword){
         setValidEntries(false)
         setValidRePassword(false)
-        {emailPattern.test(email) ? setValidEmail(false) : setValidEmail(true)}
-        {password.length >= 6 ? setValidPassword(false) : setValidPassword(true)}
-           if(password === rePassword){
-            //handleCreateUserWithFirebase()
-            console.log(newUser)
-          }else{
-            setValidRePassword(true)
-          }
-        }else {
-          setValidEntries(true)
+        if(password.length >= 6) {
+          setValidPassword(false)
+          if(password === rePassword){
+            createUser()
+          }else {
+          setValidRePassword(true)
         }
-   }
+        }else {
+          setValidPassword(true)
+        }
+      }else {
+        setValidEntries(true)
+        }
+  }
 
+  const createUser = async () => {
+    setLoading(true);
+    try {
+      const response = await createUserWithEmailAndPassword(firebase_auth, email, password);
+      const user = response.user;
+      onSend(user.uid)
+      Alert.alert('Account created', 'Please log in with your account', [
+        {text: 'Ok', onPress: () => navigation.navigate('Login')}
+        ])
+    } catch(err) {
+        if(err.code === 'auth/email-already-in-use'){
+              setValidEmail(true)
+              setEmailMessage('Email already in use')
+            }
+            if(err.code === 'auth/invalid-email'){
+              setValidEmail(true)
+              setEmailMessage('Please enter a valid email')
+            }
+            console.log(err.code)
+    } finally {
+        setLoading(false)
+    }
+  }
 
+    const onSend = async (uid) => {
+    try {
+      await setDoc(doc(database, 'users', uid), newUser);
+    } catch (error) {
+      console.log('Error saving user data', error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <Loader height={850}/>
+    );
+  }
   return (
     <View style={styles.first_container}>
       <View style={styles.second_container}>
