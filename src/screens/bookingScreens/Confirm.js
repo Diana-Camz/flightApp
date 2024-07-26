@@ -4,7 +4,7 @@ import {database, firebase_auth} from '../../config/firebase'
 import { collection, addDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
-import ButtonCancel from '../../components/ButtonCancel';
+import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 
 const Confirm = ({route, navigation}) => {
@@ -59,7 +59,7 @@ const Confirm = ({route, navigation}) => {
 
       <View style={styles.button_container}>
         <ButtonNext title={'Confirm'}  onPress={onSendData} isActive={isActive}/>
-        <ButtonCancel title={'Cancel'}  onPress={cancelRequest}/>
+        <Button title={'Cancel'}  onPress={cancelRequest}/>
       </View>
     </View>
   )
