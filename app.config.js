@@ -23,7 +23,8 @@ export default {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dianacamz.flightApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,7 +35,8 @@ export default {
       "PROJECT_ID": process.env.PROJECT_ID,
       "STORAGE_BUCKET": process.env.STORAGE_BUCKET,
       "MESSAGING_SENDER_ID": process.env.MESSAGING_SENDER_ID,
-      "APP_ID": process.env.APP_ID
-    }
+      "APP_ID": process.env.APP_ID,
+    }, 
+    "scheme": "flightApp"
   }
 }
