@@ -41,7 +41,7 @@ const Login = ({navigation}) => {
     } catch (err) {
       if(err.code === 'auth/invalid-credential'){
         setValidPassword(true)
-        setPasswordMessage('Your password is incorrect')
+        setPasswordMessage('Your email or password are incorrect')
       }
       if(err.code === 'auth/invalid-email'){
         setValidEmail(true)
