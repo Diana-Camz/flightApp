@@ -1,34 +1,35 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ButtonNext = ({title, onPress, isActive}) => {
+const Button = ({title, onPress}) => {
   return (
     <View style={styles.container}>
         <Pressable 
-            disabled={!isActive}
             onPress={onPress} 
-            style={[styles.button_container, {backgroundColor: isActive ? '#9700FF' : '#969595',}]}>
-            <Text style={[styles.title, {color: isActive ? '#ffffff' : '#c5c5c5',}]}>{title}</Text>
+            style={styles.button_container}>
+            <Text style={styles.title}>{title}</Text>
         </Pressable>
     </View>
   )
 }
 
-export default ButtonNext
+export default Button
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        marginBottom: 12,
+        marginBottom: 10,
     },
     button_container: {
         width: 290,
         height: 43,
+        borderWidth: 1.5,
+        borderColor: '#9700FF',
         borderRadius: 8,
         justifyContent: 'center',
     },
     title: {
-        color: '#c5c5c5',
+        color: '#9700FF',
         fontSize: 17,
         textAlign: 'center',
         textAlignVertical: 'center',

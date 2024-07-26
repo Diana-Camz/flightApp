@@ -7,7 +7,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import FlightInfo from '../../components/booking/FlightInfo';
 import {format, parseISO} from 'date-fns'
-import ButtonCancel from '../../components/ButtonCancel';
+import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 
 const DatesUpdate = ({route, navigation}) => {
@@ -95,7 +95,7 @@ const DatesUpdate = ({route, navigation}) => {
       </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Save'} onPress={() => handleEditData(id)} isActive={isActive}/>
-        <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()}/>
+        <Button title={'Cancel'} onPress={() => navigation.goBack()}/>
       </View>
     </View>
   )

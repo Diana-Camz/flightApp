@@ -4,7 +4,7 @@ import {database} from '../../config/firebase'
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import ButtonNext from '../../components/ButtonNext';
 import UpdateItem from '../../components/updateFlight/UpdateItem';
-import ButtonCancel from '../../components/ButtonCancel';
+import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 
 
@@ -79,7 +79,7 @@ const Update = ({route, navigation}) => {
     </View>
       <View style={styles.button_container}>
         <ButtonNext title={'Delete Flight'}  onPress={confirmDelete} isActive={isActive}/>
-        <ButtonCancel title={'Cancel'}  onPress={() => navigation.navigate('Home')}/>
+        <Button title={'Cancel'}  onPress={() => navigation.navigate('Home')}/>
       </View>
     </View>
   )
