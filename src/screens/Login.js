@@ -2,11 +2,11 @@ import { StyleSheet, View, Text, TextInput } from 'react-native'
 import React,{useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-import firestore, { doc, getDoc } from 'firebase/firestore';
 import ButtonNext from '../components/ButtonNext.js';
-import LoginAccounts from '../components/login/LoginAccounts.js';
 import Loader from '../components/Loader.js';
 import { firebase_auth as auth } from '../config/firebase.js';
+import CustomInput from '../components/login/CustomInput.js';
+import Button from '../components/Button.js';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -17,6 +17,7 @@ const Login = ({navigation}) => {
   const [validEmail, setValidEmail] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
@@ -38,9 +39,9 @@ const Login = ({navigation}) => {
       //console.log(response)
       navigation.navigate('Home')
     } catch (err) {
-      if(err.code === 'auth/email-already-in-use'){
-        setValidEmail(true)
-        setEmailMessage('Email already in use')
+      if(err.code === 'auth/invalid-credential'){
+        setValidPassword(true)
+        setPasswordMessage('Your password is incorrect')
       }
       if(err.code === 'auth/invalid-email'){
         setValidEmail(true)
@@ -51,17 +52,6 @@ const Login = ({navigation}) => {
       setLoading(false)
     }
     }
-
-  // const getDataOfUser = async (uid) => {
-  //   try {
-  //     const docRef = doc(database, 'users', uid);
-  //     const docSnap = await getDoc(docRef);
-  //     if(docSnap.exists())
-
-  //   } catch (error) {
-      
-  //   }
-  // }
 
   if (loading) {
     return (
@@ -75,37 +65,38 @@ const Login = ({navigation}) => {
         <Text style={styles.title}>FlightApp</Text>
         <Text style={styles.subtitle}>Please Sign in or Create an Account</Text>
         <View style={styles.inputs_container}>
-        <View style={styles.input_container}>
-          <TextInput style={[styles.input_text, isFocusedEmail && styles.isActiveEmail]}
-              onChangeText={val => setEmail(val)}
-              value={email}
-              autoCapitalize='none'
-              placeholder='Email'
-              placeholderTextColor={'#B4B2B2'}
-              keyboardType='email-address'
-              onFocus={() => setIsFocusedEmail(true)}
-              onBlur={() => setIsFocusedEmail(false)}/>
-              {validEmail ? <Text style={styles.errorTxt}>{emailMessage}</Text> : <Text style={styles.errorTxt}/>}
-        </View>
-        <View style={styles.input_container}>
-          <TextInput style={[styles.input_text, isFocusedPassword && styles.isActivePassword]}
-              onChangeText={val => setPassword(val)}
-              value={password}
-              autoCapitalize='none'
-              placeholder='Password'
-              placeholderTextColor={'#B4B2B2'}
-              secureTextEntry={passwordVisible}
-              onFocus={() => setIsFocusedPassword(true)}
-              onBlur={() => setIsFocusedPassword(false)}
-              />
-              {validPassword ? <Text style={styles.errorTxt}>Invalid password</Text> : <Text style={styles.errorTxt}/>}
-              <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={27} color="#A663CC" style={styles.icon} onPress={() => setPasswordVisible(!passwordVisible)}/>
-        </View>
+          <CustomInput
+            value={email}
+            onChangeText={(val) => setEmail(val)}
+            placeholder="Email"
+            isFocused={isFocusedEmail}
+            onFocus={() => setIsFocusedEmail(true)}
+            onBlur={() => setIsFocusedEmail(false)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            showError={validEmail}
+            errorMessage={emailMessage}
+          />
+          <CustomInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            isFocused={isFocusedPassword}
+            onFocus={() => setIsFocusedPassword(true)}
+            onBlur={() => setIsFocusedPassword(false)}
+            secureTextEntry={passwordVisible}
+            autoCapitalize="none"
+            maxLength={30}
+            isPassword={true}
+            onIconPress={() => setPasswordVisible(!passwordVisible)}
+            icon={passwordVisible ? "eye-off" : "eye"}
+            showError={validPassword}
+            errorMessage={passwordMessage}
+          />
         {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter your email and password</Text> : <Text style={styles.errorTxt}/>}
     </View>
         <ButtonNext title={'Sign In'} onPress={handleLogin} isActive={true}/>
-        <ButtonNext title={'Create an Account'} onPress={() => navigation.navigate('CreateAccount')} isActive={true}/>
-        <LoginAccounts />
+        <Button title={'Create an Account'} onPress={() => navigation.navigate('CreateAccount')} isActive={true}/>
       </View>
     </View>
   );
