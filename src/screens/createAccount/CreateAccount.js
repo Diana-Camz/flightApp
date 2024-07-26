@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, TextInput, Alert, ScrollView } from 'react-native'
 import React, {useState} from 'react'
-import ButtonCancel from '../../components/ButtonCancel'
 import ButtonNext from '../../components/ButtonNext';
 import CustomInput from '../../components/login/CustomInput';
 import { firebase_auth, database } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, setDoc, doc } from 'firebase/firestore';
 import Loader from '../../components/Loader';
+import Button from '../../components/Button';
 
 const CreateAccount = ({navigation}) => {
   const [loading, setLoading] = useState(false)
@@ -160,7 +160,7 @@ const CreateAccount = ({navigation}) => {
             {validEntries ? <Text style={styles.errorEntriesTxt}>Please enter all fields</Text> : <Text style={styles.error_text}/>}
           </View>
           <ButtonNext title={'Create Account'} onPress={handleRegister} isActive={true}/>
-          <ButtonCancel title={'Cancel'} onPress={() => navigation.goBack()} />
+          <Button title={'Cancel'} onPress={() => navigation.goBack()} />
         </ScrollView>
       </View>  
     </View>
