@@ -16,7 +16,7 @@ It also allows generating a user account and having your own list of flights acc
 
 You can clone this repository 
 ```bash
-  git@github.com:Diana-Camz/MovieApp.git
+  git@github.com:Diana-Camz/FlightApp.git
 ```
 and run the project with
 ```bash
@@ -37,9 +37,9 @@ Clone .env.template file to .env and add your environment variables
 ## Screenshots
 
 <img src='./src/screenshots/login1.jpg' width="280" height="600">
-<img src='./src/screenshots/createAccount.png' width="280" height="600">
-<img src='./src/screenshots/Home.png' width="280" height="600">
-<img src='./src/screenshots/createFlightProcess1.png' width="280" height="600">
-<img src='./src/screenshots/createFlightProcess2.png' width="280" height="600">
-<img src='./src/screenshots/updateFlight.png' width="280" height="600">
-<img src='./src/screenshots/deleteFlight.png' width="280" height="600">
+<img src='./src/screenshots/createAccount.png' width="1120" height="600">
+<img src='./src/screenshots/Home.png' width="560" height="600">
+<img src='./src/screenshots/createFlightProcess1.png' width="1120" height="600">
+<img src='./src/screenshots/createFlightProcess2.png' width="840" height="600">
+<img src='./src/screenshots/updateFlight.png' width="840" height="600">
+<img src='./src/screenshots/deleteFlight.png' width="840" height="600">
